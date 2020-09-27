@@ -6,6 +6,7 @@ import AppsIcon from '@material-ui/icons/Apps';
 import Search from '../components/Search';
 
 function Home() {
+  //Just the homepage
   return (
     <div className='Home'>
       <div className='Home__header'>
@@ -26,6 +27,7 @@ function Home() {
           alt='google'
         />
         <div className='Home__inputContainer'>
+          {/* the search input */}
           <Search />
         </div>
       </div>

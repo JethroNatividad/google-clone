@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useStateValue } from '../StateProvider';
 import useGoogleSearch from '../useGoogleSearch';
 import './SearchPage.css';
 import response from '../response';
@@ -13,10 +12,11 @@ import RoomIcon from '@material-ui/icons/Room';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 function SearchPage() {
-  const [{ term }, dispatch] = useStateValue();
+  //react router hook to get the url params
   const params = useParams();
-  // const { data } = useGoogleSearch(term);
-  const { data } = useGoogleSearch(params.id);
+  //custom hook returns data with passed search term
+  const { data } = useGoogleSearch(params.term);
+
   //mock api
   // const data = response;
   return (
@@ -29,7 +29,8 @@ function SearchPage() {
           />
         </Link>
         <div className='SearchPage__headerBody'>
-          <Search hideButtons value={params.id} />
+          {/* search input with no buttons and passed term */}
+          <Search hideButtons value={params.term} />
           <div className='SearchPage__options'>
             <div className='SearchPage__optionsLeft'>
               <div className='SearchPage__option'>
@@ -68,11 +69,12 @@ function SearchPage() {
           </div>
         </div>
       </div>
-      {term && (
+      {params.term && (
         <div className='SearchPage__results'>
           <div className='SearchPage__resultsCount'>
             About {data?.searchInformation?.formattedTotalResults} results (
-            {data?.searchInformation?.formattedSearchTime} seconds) for {term}
+            {data?.searchInformation?.formattedSearchTime} seconds) for{' '}
+            {params.term}
           </div>
           {data?.items?.map((item) => (
             <div className='SearchPage__result'>

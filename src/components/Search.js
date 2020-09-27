@@ -5,26 +5,21 @@ import MicIcon from '@material-ui/icons/Mic';
 import { Button } from '@material-ui/core';
 import useInputState from '../hooks/useInputState';
 import { useHistory } from 'react-router-dom';
-import { useStateValue } from '../StateProvider';
-import { actionTypes } from '../stateReducer';
 
+//We reuse the search component,      value came from the url parameters
 function Search({ hideButtons = false, value }) {
-  const [{}, dispatch] = useStateValue();
-  const [input, handleInput, setInput] = useInputState('');
+  //custom input hook
+  const [input, handleInput] = useInputState(value);
+  //react router history hook
   const History = useHistory();
-  useEffect(() => {
-    if (value) setInput(value);
-  }, []);
+  //function to call when searching
   const handleSearch = (evt) => {
+    //prevent page refresh
     evt.preventDefault();
-
-    dispatch({
-      type: actionTypes.setSearchTerm,
-      term: input,
-    });
-
+    //redirects to /search/ input
     History.push(`/search/${input}`);
   };
+
   return (
     <form className='Search' onSubmit={handleSearch}>
       <div className='Search__input'>
@@ -32,6 +27,7 @@ function Search({ hideButtons = false, value }) {
         <input value={input} onChange={handleInput} />
         <MicIcon />
       </div>
+      {/* hides these buttons if hideButtons = true is passed */}
       {!hideButtons && (
         <div className='Search__buttons'>
           <Button type='submit' variant='outlined'>
